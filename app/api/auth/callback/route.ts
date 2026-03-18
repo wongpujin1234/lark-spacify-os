@@ -64,6 +64,6 @@ export async function GET(request: NextRequest) {
     avatar: user?.avatar_url || "",
   });
 
-  const baseUrl = process.env.REDIRECT_URI?.replace("/auth/callback", "");
+  const baseUrl = process.env.REDIRECT_URI?.replace("/api/auth/callback", "");
   return Response.redirect(`${baseUrl}/welcome?${params}`);
 }
