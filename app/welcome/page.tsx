@@ -15,43 +15,82 @@ function WelcomeContent() {
   const avatar = searchParams.get("avatar");
 
   return (
-    <div style={styles.container}>
-      {avatar && <img src={avatar} alt="avatar" style={styles.avatar} />}
-      <h1 style={styles.welcome}>👋 Welcome, {name}!</h1>
-      <div style={styles.card}>
-        <Row label="Display Name" value={name} />
-        <Row label="English Name" value={enName} />
-        <Row label="User ID" value={userId} />
-        <Row label="Open ID" value={openId} />
-        <Row label="Employee ID" value={employeeId} />
-        <Row label="Email" value={email} />
+    <div className="min-h-screen bg-linear-to-b from-slate-100 via-slate-50 to-white text-slate-900 antialiased">
+      <div className="mx-auto max-w-lg px-4 py-12 sm:py-16">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-8 shadow-xl shadow-slate-200/50 ring-1 ring-slate-900/5">
+          <div className="flex flex-col items-center text-center">
+            {avatar ? (
+              <img
+                src={avatar}
+                alt=""
+                className="h-24 w-24 rounded-full border-4 border-white object-cover shadow-lg ring-2 ring-slate-200"
+              />
+            ) : (
+              <div className="flex h-24 w-24 items-center justify-center rounded-full bg-slate-200 text-3xl text-slate-500">
+                ?
+              </div>
+            )}
+            <h1 className="mt-6 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+              Welcome back
+            </h1>
+            <p className="mt-1 text-lg font-semibold text-indigo-600">
+              {name || "User"}
+            </p>
+            <p className="mt-1 text-sm text-slate-500">
+              Signed in with Lark SSO
+            </p>
+          </div>
+
+          <dl className="mt-8 space-y-0 divide-y divide-slate-100 rounded-xl border border-slate-100 bg-slate-50/80">
+            <InfoRow label="Display name" value={name} />
+            <InfoRow label="English name" value={enName} />
+            <InfoRow label="User ID" value={userId} mono />
+            <InfoRow label="Open ID" value={openId} mono />
+            <InfoRow label="Employee ID" value={employeeId} />
+            <InfoRow label="Email" value={email} />
+          </dl>
+        </div>
       </div>
     </div>
   );
 }
 
-function Row({ label, value }: { label: string; value: string | null }) {
+function InfoRow({
+  label,
+  value,
+  mono,
+}: {
+  label: string;
+  value: string | null;
+  mono?: boolean;
+}) {
+  const empty = !value || value.trim() === "";
   return (
-    <div style={styles.row}>
-      <span style={styles.label}>{label}</span>
-      <span style={styles.value}>{value || "—"}</span>
+    <div className="flex flex-col gap-0.5 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+      <dt className="shrink-0 text-sm font-semibold text-slate-600">{label}</dt>
+      <dd
+        className={`text-right text-sm text-slate-900 sm:max-w-[65%] sm:truncate ${
+          mono ? "font-mono text-xs sm:text-sm" : ""
+        } ${empty ? "text-slate-400 italic" : ""}`}
+        title={value ?? undefined}
+      >
+        {empty ? "Not available" : value}
+      </dd>
     </div>
   );
 }
 
-const styles: Record<string, React.CSSProperties> = {
-  container: { fontFamily: "sans-serif", maxWidth: 480, margin: "60px auto", padding: 24, textAlign: "center" },
-  avatar: { width: 80, height: 80, borderRadius: "50%", marginBottom: 16 },
-  welcome: { fontSize: 28, marginBottom: 24, color: "#1a1a2e" },
-  card: { background: "#f5f7fa", borderRadius: 12, padding: 24, textAlign: "left" },
-  row: { display: "flex", justifyContent: "space-between", padding: "10px 0", borderBottom: "1px solid #e0e0e0" },
-  label: { fontWeight: 600, color: "#555" },
-  value: { color: "#222" },
-};
+function WelcomeFallback() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-slate-100 text-slate-700">
+      <p className="text-base font-medium">Loading…</p>
+    </div>
+  );
+}
 
 export default function WelcomePage() {
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense fallback={<WelcomeFallback />}>
       <WelcomeContent />
     </Suspense>
   );

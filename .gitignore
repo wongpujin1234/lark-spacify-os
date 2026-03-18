@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# https://lark-sso-app1.vercel.app
+# npx vercel --prod
