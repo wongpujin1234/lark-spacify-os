@@ -12,6 +12,7 @@ function WelcomeContent() {
   const openId = searchParams.get("open_id");
   const employeeId = searchParams.get("employee_id");
   const email = searchParams.get("email");
+  const department = searchParams.get("department");
   const avatar = searchParams.get("avatar");
 
   return (
@@ -48,6 +49,7 @@ function WelcomeContent() {
             <InfoRow label="Open ID" value={openId} mono />
             <InfoRow label="Employee ID" value={employeeId} />
             <InfoRow label="Email" value={email} />
+            <InfoRow label="Department" value={department} />
           </dl>
         </div>
       </div>
