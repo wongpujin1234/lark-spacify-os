@@ -38,7 +38,7 @@ function WelcomeContent() {
               {name || "User"}
             </p>
             <p className="mt-1 text-sm text-slate-500">
-              Signed in with Lark SSO
+              Signed in with Spacify OS
             </p>
           </div>
 
