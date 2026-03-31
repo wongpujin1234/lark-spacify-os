@@ -17,7 +17,7 @@ function isMobilePhoneUserAgent(userAgent: string | null): boolean {
   return isPhone && !isTablet;
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith("/api")) {
     return NextResponse.next();
   }
