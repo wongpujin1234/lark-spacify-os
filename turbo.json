@@ -1,5 +1,15 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "LARK_APP_ID",
+    "LARK_APP_SECRET",
+    "REDIRECT_URI",
+    "DESKTOP_APP_URL",
+    "MOBILE_APP_URL",
+    "NEXT_PUBLIC_APP_URL",
+    "NEXT_PUBLIC_LARK_APP_ID",
+    "LARK_DEBUG_SECRET"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
