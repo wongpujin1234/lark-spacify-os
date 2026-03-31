@@ -7,7 +7,22 @@
 
 Framework: Next.js (auto-detected). Do not set the root to the monorepo root for either project.
 
-Each app includes [`vercel.json`](../apps/desktop/vercel.json) with `installCommand: cd ../.. && npm ci` so workspace packages (`@lark-sso/*`) install from the repo root (uses root `package-lock.json`; avoids flaky `npm install` on Vercel). Leave **Output Directory** empty (default `.next`).
+Each app includes [`vercel.json`](../apps/desktop/vercel.json):
+
+- **`installCommand`:** `cd ../.. && npm ci` — installs from the **monorepo root** using root [`package-lock.json`](../package-lock.json) (required; commit it).
+- **`buildCommand`:** `cd ../.. && npx turbo run build --filter=@lark-sso/desktop` (or `@lark-sso/mobile`) — builds from the repo root like local `turbo build`.
+
+Root [`.npmrc`](../.npmrc) sets `maxsockets=1` to reduce flaky npm errors on CI. Leave **Output Directory** empty (default `.next`).
+
+### If `npm ci` or install fails on Vercel
+
+- **Git deploys** clone the full repo — `package-lock.json` at the root must be **committed and pushed**.
+- **CLI deploy** from `apps/desktop` only uploads a **subset** of files; `npm ci` can fail if the lockfile never reaches the builder. **Prefer:** push to Git and let Vercel build from Git, **or** run the CLI from the **repository root** after `vercel link` there so the whole repo uploads:
+  ```bash
+  cd /path/to/lark-sso-app
+  npx vercel link   # once
+  npx vercel --prod
+  ```
 
 ### If you see “routes-manifest.json couldn’t be found”
 
@@ -17,7 +32,7 @@ That happens when the project **Root Directory** is still the repo root (old sin
 2. **Settings** → **General** → clear a custom **Output Directory** if one was set; Next’s default is `.next` relative to the app.
 3. Redeploy.
 
-CLI: link or deploy with the correct project; `npx vercel --prod` from the repo root uses the **linked** project’s Root Directory—update it in the dashboard or create a new project with the right root.
+CLI: run `npx vercel --prod` from the **monorepo root** (not only `apps/desktop`) so the upload includes `package-lock.json` and `packages/*`. The linked project’s **Root Directory** in the dashboard should still be `apps/desktop` or `apps/mobile`.
 
 ## Production environment variables
 
