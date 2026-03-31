@@ -1,10 +1,11 @@
 import path from "path";
 import type { NextConfig } from "next";
 
-const repoRoot = path.join(__dirname, "../..");
+/** Monorepo root; avoid `__dirname` in edge-adjacent bundles. */
+const repoRoot = path.resolve(process.cwd(), "..", "..");
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@lark-sso/auth", "@lark-sso/ui", "@lark-sso/device"],
+  transpilePackages: ["@lark-sso/auth", "@lark-sso/ui"],
   /** Include monorepo `packages/*` in serverless traces (Vercel). */
   outputFileTracingRoot: repoRoot,
   turbopack: {
