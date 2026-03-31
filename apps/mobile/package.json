@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@lark-sso/auth": "*",
-    "@lark-sso/device": "*",
     "@lark-sso/ui": "*",
     "next": "16.1.7",
     "react": "19.2.3",

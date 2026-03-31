@@ -1,9 +1,20 @@
-import { isMobilePhoneUserAgent } from "@lark-sso/device";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 function normalizeOrigin(url: string): string {
   return url.replace(/\/$/, "");
+}
+
+/**
+ * Edge-safe UA detection for phones.
+ * Avoids external parsers that are unsupported in Vercel Edge runtime.
+ */
+function isMobilePhoneUserAgent(userAgent: string | null): boolean {
+  if (!userAgent) return false;
+  const ua = userAgent.toLowerCase();
+  const isTablet = /ipad|tablet|playbook|silk|kindle|android(?!.*mobile)/.test(ua);
+  const isPhone = /iphone|ipod|android.*mobile|windows phone|blackberry|bb10|opera mini|mobile/.test(ua);
+  return isPhone && !isTablet;
 }
 
 export function middleware(request: NextRequest) {
